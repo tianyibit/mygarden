@@ -90,11 +90,25 @@ fi
 # --- 3.5 自动添加 cover 字段（取文章内第一张图片）---
 for dest in "$CONTENT_DIR"/*.md; do
     [ "$(basename "$dest")" = "index.md" ] && continue
-    # 取正文中第一张图片（支持两种语法）
-    first_img=$(grep -o 'images/[^)]*' "$dest" 2>/dev/null | head -1)
-    if [ -z "$first_img" ]; then
-        wikilink_img=$(grep -oE '!\[\[[^]]+\.(png|jpg|jpeg|gif|webp)\]\]' "$dest" 2>/dev/null | head -1 | sed 's/!\[\[//;s/\]\]//')
-        [ -n "$wikilink_img" ] && first_img="images/$wikilink_img"
+    # 取正文（frontmatter 之后）中最先出现的图片
+    first_img=""
+    body_start=$(awk '/^---$/{n++;if(n==2){print NR;exit}}' "$dest")
+    if [ -n "$body_start" ]; then
+        # 逐行扫描，找到第一个图片引用就停止
+        first_img=$(tail -n +"$body_start" "$dest" | while IFS= read -r line; do
+            # 检查 ![[filename.ext]] 格式
+            wiki=$(echo "$line" | grep -oE '!\[\[[^]]+\.(png|jpg|jpeg|gif|webp)\]\]' | head -1 | sed 's/!\[\[//;s/\]\]//')
+            if [ -n "$wiki" ]; then
+                echo "images/$wiki"
+                break
+            fi
+            # 检查 ![](images/xxx) 格式
+            std=$(echo "$line" | grep -o 'images/[^)]*' | head -1)
+            if [ -n "$std" ]; then
+                echo "$std"
+                break
+            fi
+        done)
     fi
     [ -z "$first_img" ] && continue
     # 检查现有 cover
