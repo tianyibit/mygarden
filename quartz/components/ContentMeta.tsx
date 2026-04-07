@@ -54,11 +54,7 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
               ))}{"]"}</span>
           )}
         </div>
-        {coverImage && (
-          <div class="article-hero-image">
-            <img src={coverImage} alt={fileData.frontmatter?.title ?? ""} />
-          </div>
-        )}
+        {/* cover 仅用于首页卡片，文章详情页不重复显示 */}
       </>
     )
   }
