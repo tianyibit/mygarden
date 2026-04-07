@@ -86,19 +86,24 @@ fi
 # --- 3.5 自动添加 cover 字段（取文章内第一张图片）---
 for dest in "$CONTENT_DIR"/*.md; do
     [ "$(basename "$dest")" = "index.md" ] && continue
-    # 已有 cover 则跳过
-    head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep -q 'cover:' && continue
-    # 取第一张图片（支持两种语法）
+    # 取正文中第一张图片（支持两种语法）
     first_img=$(grep -o 'images/[^)]*' "$dest" 2>/dev/null | head -1)
     if [ -z "$first_img" ]; then
-        # 尝试 ![[filename]] 格式
         wikilink_img=$(grep -oE '!\[\[[^]]+\.(png|jpg|jpeg|gif|webp)\]\]' "$dest" 2>/dev/null | head -1 | sed 's/!\[\[//;s/\]\]//')
         [ -n "$wikilink_img" ] && first_img="images/$wikilink_img"
     fi
     [ -z "$first_img" ] && continue
-    # 在 publish: 行后插入 cover
-    sed -i '' "s|^publish: true|publish: true\ncover: $first_img|" "$dest"
-    echo "  封面: $(basename "$dest") → $first_img"
+    # 检查现有 cover
+    old_cover=$(head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep '^cover:' | sed 's/^cover: *//' || true)
+    if [ -z "$old_cover" ]; then
+        # 没有 cover，插入
+        sed -i '' "s|^publish: true|publish: true\ncover: $first_img|" "$dest"
+        echo "  封面: $(basename "$dest") → $first_img"
+    elif [ "$old_cover" != "$first_img" ]; then
+        # cover 和首图不一致，更新
+        sed -i '' "s|^cover: .*|cover: $first_img|" "$dest"
+        echo "  封面更新: $(basename "$dest") → $first_img"
+    fi
 done
 
 # --- 4. 清理已取消发布的文章 ---
