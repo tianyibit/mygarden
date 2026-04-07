@@ -83,18 +83,23 @@ if [ -d "$WRITING_IMAGES" ]; then
     done
 fi
 
-# --- 3.5 自动生成英文 slug ---
+# --- 3.5 重命名文件为英文（Quartz 用文件名作 URL）---
 for dest in "$CONTENT_DIR"/*.md; do
-    [ "$(basename "$dest")" = "index.md" ] && continue
-    # 已有 slug 则跳过
-    head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep -q '^slug:' && continue
-    # 从 title 生成英文 slug
-    title=$(head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep '^title:' | sed 's/^title: *//;s/^"//;s/"$//')
-    [ -z "$title" ] && continue
-    slug=$(node "$SCRIPT_DIR/generate-slug.js" "$title")
-    [ -z "$slug" ] && continue
-    sed -i '' "s|^publish: true|publish: true\nslug: $slug|" "$dest"
-    echo "  链接: $(basename "$dest") → /$slug"
+    filename="$(basename "$dest" .md)"
+    [ "$filename" = "index" ] && continue
+    # 文件名已经是纯英文则跳过
+    if echo "$filename" | grep -qP '[\x{4e00}-\x{9fff}]' 2>/dev/null || echo "$filename" | grep -q '[^a-zA-Z0-9_-]'; then
+        # 从 title 生成英文文件名
+        title=$(head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep '^title:' | sed 's/^title: *//;s/^"//;s/"$//')
+        [ -z "$title" ] && continue
+        slug=$(node "$SCRIPT_DIR/generate-slug.js" "$title")
+        [ -z "$slug" ] && continue
+        new_dest="$CONTENT_DIR/${slug}.md"
+        if [ "$dest" != "$new_dest" ] && [ ! -f "$new_dest" ]; then
+            mv "$dest" "$new_dest"
+            echo "  重命名: $filename → $slug"
+        fi
+    fi
 done
 
 # --- 3.6 自动添加 cover 字段（取文章内第一张图片）---
