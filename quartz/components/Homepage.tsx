@@ -153,14 +153,14 @@ export default ((userOpts?: Partial<Options>) => {
   }
 
   Homepage.css = `
-    .homepage { margin-top: 2rem; }
+    .homepage { margin-top: 0; }
 
     /* ===== HERO ===== */
     .hp-hero {
       display: flex;
       align-items: center;
       gap: 3rem;
-      padding: 5rem 0 7rem;
+      padding: 0 0 5rem;
       width: 100%;
     }
     .hp-hero-text {
@@ -235,11 +235,11 @@ export default ((userOpts?: Partial<Options>) => {
         align-items: flex-start;
         text-align: left;
         gap: 1.5rem;
-        padding: 2rem 0 3rem;
+        padding: 0 0 3rem;
       }
       .hp-hero-text { max-width: 100%; }
       .hp-name { font-size: 1.5rem; }
-      .hp-name-reveal { max-width: none; animation: none; }
+      .hp-name-reveal { animation: reveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
       .hp-avatar {
         flex: none;
         width: 100%;
@@ -247,12 +247,13 @@ export default ((userOpts?: Partial<Options>) => {
         border-radius: 12px;
       }
       .hp-tagline { display: flex; }
-      .hp-section { margin-bottom: 4rem; }
+      .hp-section { margin-bottom: 2.5rem; }
+      .hp-section-head { margin-bottom: 1.5rem; }
       .hp-section-title { font-size: 1.5rem; }
     }
 
     /* ===== SECTIONS ===== */
-    .hp-section { margin-bottom: 7rem; }
+    .hp-section { margin-bottom: 4rem; }
 
     .hp-section-head {
       display: flex;
@@ -312,7 +313,7 @@ export default ((userOpts?: Partial<Options>) => {
       gap: 2.5rem;
     }
     @media (max-width: 768px) {
-      .hp-articles { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+      .hp-articles { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     }
     @media (max-width: 480px) {
       .hp-articles { grid-template-columns: 1fr; }
@@ -402,8 +403,8 @@ export default ((userOpts?: Partial<Options>) => {
       gap: 2.5rem;
     }
     @media (max-width: 768px) {
-      .hp-projects { grid-template-columns: 1fr; }
-      .hp-proj-card { padding: 1.5rem; }
+      .hp-projects { grid-template-columns: 1fr; gap: 1.5rem; }
+      .hp-proj-card { padding: 1.5rem; gap: 0.75rem; }
     }
 
     .hp-proj-card {
