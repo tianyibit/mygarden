@@ -23,6 +23,10 @@ import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
+import TagSections from "./TagSections"
+import Sidenotes from "./Sidenotes"
+import Homepage from "./Homepage"
+import Navbar from "./Navbar"
 
 export {
   ArticleTitle,
@@ -50,4 +54,8 @@ export {
   Comments,
   Flex,
   ConditionalRender,
+  TagSections,
+  Sidenotes,
+  Homepage,
+  Navbar,
 }
