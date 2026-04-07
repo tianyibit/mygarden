@@ -24,7 +24,8 @@ fi
 
 CONVERTED=0
 
-for img in "$IMAGE_DIR"/*.{jpg,jpeg,png,JPG,JPEG,PNG} 2>/dev/null; do
+shopt -s nullglob
+for img in "$IMAGE_DIR"/*.jpg "$IMAGE_DIR"/*.jpeg "$IMAGE_DIR"/*.png "$IMAGE_DIR"/*.JPG "$IMAGE_DIR"/*.JPEG "$IMAGE_DIR"/*.PNG; do
     [ -f "$img" ] || continue
 
     filename="$(basename "$img")"
@@ -37,7 +38,7 @@ for img in "$IMAGE_DIR"/*.{jpg,jpeg,png,JPG,JPEG,PNG} 2>/dev/null; do
     # 转换为 WebP（质量 80，足够清晰且体积小）
     if cwebp -q 80 "$img" -o "$webp_path" -quiet; then
         # 更新所有 Markdown 文件中的引用
-        find "$CONTENT_DIR" -name '*.md' -exec sed -i'' -e "s|${filename}|${name}.webp|g" {} +
+        find "$CONTENT_DIR" -name '*.md' -exec sed -i '' "s|${filename}|${name}.webp|g" {} +
         # 删除原图
         rm "$img"
         CONVERTED=$((CONVERTED + 1))

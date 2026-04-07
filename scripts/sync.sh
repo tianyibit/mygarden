@@ -3,7 +3,7 @@
 # sync.sh — 从 Obsidian Writing 目录同步 publish:true 的文章到 Quartz content/
 #
 # 用法: bash scripts/sync.sh          (在 mygarden 目录下运行)
-#   或: garden-publish                 (通过 shell alias)
+#   或: gp                 (通过 shell alias)
 #
 
 set -euo pipefail
@@ -62,7 +62,7 @@ if [ -d "$WRITING_IMAGES" ]; then
         # 匹配 ![xxx](images/yyy) 和 ![[images/yyy]] 格式
         while IFS= read -r img; do
             REFERENCED_IMAGES+=("$img")
-        done < <(grep -oP '(?:!\[.*?\]\(images/|!\[\[images/)([^)\]]+)' "$src" 2>/dev/null | sed 's/.*images\///' || true)
+        done < <(grep -o 'images/[^)]*' "$src" 2>/dev/null | sed 's|images/||' || true)
     done
 
     # 去重

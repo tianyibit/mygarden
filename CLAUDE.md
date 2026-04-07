@@ -38,7 +38,7 @@ Mylife/                    ← Obsidian vault 根目录
 
 1. 在 Obsidian `Writing/` 目录中撰写文章（使用 `new-article` 模板）
 2. 准备发布时，将 frontmatter 中 `publish: false` 改为 `publish: true`
-3. 运行 `garden-publish`（或 `bash scripts/sync.sh`）
+3. 运行 `gp`（或 `bash scripts/sync.sh`）
 4. 脚本自动：扫描 → 同步文章和图片到 content/ → git commit + push
 5. GitHub Actions 自动：构建 Quartz → 部署到 Cloudflare Pages
 
