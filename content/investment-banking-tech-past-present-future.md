@@ -2,7 +2,7 @@
 title: 投行科技的过去、现在与未来
 date: 2024-08-06
 publish: true
-cover: images/0eb8d314091a.png
+cover: images/Pasted image 20260407204444.png
 tags:
   - 投行科技
   - 产品思考

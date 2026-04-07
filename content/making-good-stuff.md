@@ -5,7 +5,7 @@ tags:
   - 产品思考
   - 随笔
 publish: true
-cover: images/82599e452c39.jpg
+cover: images/Pasted image 20260407203548.png
 ---
 ![[Pasted image 20260407203548.png]]
 

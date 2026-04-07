@@ -5,7 +5,7 @@ tags:
   - AI
   - 随笔
 publish: true
-cover: images/03ec19d76edd.jpg
+cover: images/eb70e75a5c90d459204a7fd2b43e4189.jpg
 ---
 ![[eb70e75a5c90d459204a7fd2b43e4189.jpg]]
 

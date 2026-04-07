@@ -5,7 +5,7 @@ tags:
   - 工程实践
   - 随笔
 publish: true
-cover: images/5a4269d3175f.png
+cover: images/Pasted image 20260407202948.png
 ---
 ![[Pasted image 20260407202948.png]]
 ## 工具
