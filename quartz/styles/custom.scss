@@ -107,6 +107,14 @@ body:not([data-slug="index"]) article {
     }
   }
 
+  // 窄图：alt 包含 "narrow" 时与文字同宽
+  img[alt~="narrow"] {
+    max-width: 100%;
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+  }
+
   .img-grid {
     max-width: none;
     width: calc(min(100vw - 2.5rem, 1280px));
@@ -715,5 +723,48 @@ ul.tags {
     max-width: 100%;
     border-radius: 12px;
     margin: 0;
+  }
+}
+
+// --- Callout [!grid]：并排图片 ---
+.callout[data-callout="grid"] {
+  background: none;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  max-width: none;
+  width: calc(min(100vw - 2.5rem, 1280px));
+  margin-left: 50%;
+  transform: translateX(-50%);
+
+  @media (max-width: 1279px) and (min-width: 481px) {
+    width: calc(100vw - 20vw);
+  }
+
+  @media (max-width: 480px) {
+    width: calc(100vw - 2.5rem);
+  }
+
+  .callout-title { display: none; }
+
+  .callout-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 0;
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+
+    p { margin: 0; }
+
+    img {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      transform: none;
+      border-radius: 12px;
+    }
   }
 }
