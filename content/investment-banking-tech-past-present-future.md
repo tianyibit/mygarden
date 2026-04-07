@@ -2,12 +2,12 @@
 title: 投行科技的过去、现在与未来
 date: 2024-08-06
 publish: true
-cover: images/Pasted image 20260407204444.png
+cover: images/Pasted-image-20260407204444.webp
 tags:
   - 投行科技
   - 产品思考
 ---
-![[Pasted image 20260407204444.png]]
+![[Pasted-image-20260407204444.webp]]
 
 
 本文梳理了投行科技的发展历史，并将我之前的很多观察和思考做了系统化的整理。内容总共分为四个部分：

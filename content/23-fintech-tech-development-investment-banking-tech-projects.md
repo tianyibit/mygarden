@@ -2,11 +2,11 @@
 title: 23年金融科技发展奖之投行科技项目梳理
 date: 2024-11-29
 publish: true
-cover: images/Pasted image 20260407203805.png
+cover: images/Pasted-image-20260407203805.webp
 tags:
   - 投行科技
 ---
-![[Pasted image 20260407203805.png]]
+![[Pasted-image-20260407203805.webp]]
 
 **金融科技发展奖**是中国金融业唯一的部级科技奖项，2021年由人民银行设立，是从1992年的银行科技发展奖升级而来，是国内金融科技领域最具含金量的奖项，又称中国金融科技奥斯卡。
 
