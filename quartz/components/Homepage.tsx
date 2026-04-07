@@ -86,7 +86,8 @@ export default ((userOpts?: Partial<Options>) => {
             {recentPages.map((page, idx) => {
               const title = page.frontmatter?.title ?? "Untitled"
               const tags = page.frontmatter?.tags ?? []
-              const cover = page.frontmatter?.cover as string | undefined
+              const coverRaw = page.frontmatter?.cover as string | undefined
+              const cover = coverRaw ? resolveRelative(fileData.slug!, coverRaw as any) : undefined
               return (
                 <a href={resolveRelative(fileData.slug!, page.slug!)} class="hp-card internal" data-no-popover>
                   {cover && (

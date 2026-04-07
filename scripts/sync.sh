@@ -83,7 +83,21 @@ if [ -d "$WRITING_IMAGES" ]; then
     done
 fi
 
-# --- 3.5 自动添加 cover 字段（取文章内第一张图片）---
+# --- 3.5 自动生成英文 slug ---
+for dest in "$CONTENT_DIR"/*.md; do
+    [ "$(basename "$dest")" = "index.md" ] && continue
+    # 已有 slug 则跳过
+    head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep -q '^slug:' && continue
+    # 从 title 生成英文 slug
+    title=$(head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep '^title:' | sed 's/^title: *//;s/^"//;s/"$//')
+    [ -z "$title" ] && continue
+    slug=$(node "$SCRIPT_DIR/generate-slug.js" "$title")
+    [ -z "$slug" ] && continue
+    sed -i '' "s|^publish: true|publish: true\nslug: $slug|" "$dest"
+    echo "  链接: $(basename "$dest") → /$slug"
+done
+
+# --- 3.6 自动添加 cover 字段（取文章内第一张图片）---
 for dest in "$CONTENT_DIR"/*.md; do
     [ "$(basename "$dest")" = "index.md" ] && continue
     # 取正文中第一张图片（支持两种语法）
