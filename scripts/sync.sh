@@ -77,14 +77,26 @@ if [ -d "$WRITING_IMAGES" ]; then
     printf '%s\n' "${REFERENCED_IMAGES[@]}" 2>/dev/null | sort -u | while IFS= read -r img; do
         [ -z "$img" ] && continue
         img_src="$WRITING_IMAGES/$img"
-        img_dest="$CONTENT_IMAGES/$img"
+        # 文件名空格替换为连字符
+        safe_name=$(echo "$img" | tr ' ' '-')
+        img_dest="$CONTENT_IMAGES/$safe_name"
         if [ -f "$img_src" ]; then
             if [ ! -f "$img_dest" ] || ! diff -q "$img_src" "$img_dest" > /dev/null 2>&1; then
                 cp "$img_src" "$img_dest"
-                echo "  图片: $img"
+                echo "  图片: $img → $safe_name"
             fi
         fi
     done
+
+    # 更新 content 中 md 文件里的图片引用（空格→连字符）
+    for mdfile in "$CONTENT_DIR"/*.md; do
+        if grep -q 'Pasted image' "$mdfile" 2>/dev/null; then
+            sed -i '' 's/Pasted image /Pasted-image-/g' "$mdfile"
+        fi
+    done
+
+    # 删除文件名含空格的旧图片
+    find "$CONTENT_IMAGES" -name '* *' -delete 2>/dev/null
 fi
 
 # --- 3.5 自动添加 cover 字段（取文章内第一张图片）---
