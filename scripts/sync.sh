@@ -6,7 +6,7 @@
 #   或: gp                 (通过 shell alias)
 #
 
-set -euo pipefail
+set -uo pipefail
 
 # --- 路径配置 ---
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -59,16 +59,19 @@ if [ -d "$WRITING_IMAGES" ]; then
     mkdir -p "$CONTENT_IMAGES"
     REFERENCED_IMAGES=()
     for src in "${PUBLISH_FILES[@]}"; do
-        # 匹配 ![xxx](images/yyy) 和 ![[images/yyy]] 格式
+        # 匹配 ![xxx](images/yyy) 格式
         while IFS= read -r img; do
             REFERENCED_IMAGES+=("$img")
         done < <(grep -o 'images/[^)]*' "$src" 2>/dev/null | sed 's|images/||' || true)
+        # 匹配 ![[filename.ext]] 格式（Obsidian wikilink 图片）
+        while IFS= read -r img; do
+            REFERENCED_IMAGES+=("$img")
+        done < <(grep -oE '!\[\[[^]]+\.(png|jpg|jpeg|gif|webp)\]\]' "$src" 2>/dev/null | sed 's/!\[\[//;s/\]\]//' || true)
     done
 
-    # 去重
-    UNIQUE_IMAGES=($(printf '%s\n' "${REFERENCED_IMAGES[@]}" 2>/dev/null | sort -u || true))
-
-    for img in "${UNIQUE_IMAGES[@]}"; do
+    # 去重并同步
+    printf '%s\n' "${REFERENCED_IMAGES[@]}" 2>/dev/null | sort -u | while IFS= read -r img; do
+        [ -z "$img" ] && continue
         img_src="$WRITING_IMAGES/$img"
         img_dest="$CONTENT_IMAGES/$img"
         if [ -f "$img_src" ]; then
@@ -79,6 +82,24 @@ if [ -d "$WRITING_IMAGES" ]; then
         fi
     done
 fi
+
+# --- 3.5 自动添加 cover 字段（取文章内第一张图片）---
+for dest in "$CONTENT_DIR"/*.md; do
+    [ "$(basename "$dest")" = "index.md" ] && continue
+    # 已有 cover 则跳过
+    head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep -q 'cover:' && continue
+    # 取第一张图片（支持两种语法）
+    first_img=$(grep -o 'images/[^)]*' "$dest" 2>/dev/null | head -1)
+    if [ -z "$first_img" ]; then
+        # 尝试 ![[filename]] 格式
+        wikilink_img=$(grep -oE '!\[\[[^]]+\.(png|jpg|jpeg|gif|webp)\]\]' "$dest" 2>/dev/null | head -1 | sed 's/!\[\[//;s/\]\]//')
+        [ -n "$wikilink_img" ] && first_img="images/$wikilink_img"
+    fi
+    [ -z "$first_img" ] && continue
+    # 在 publish: 行后插入 cover
+    sed -i '' "s|^publish: true|publish: true\ncover: $first_img|" "$dest"
+    echo "  封面: $(basename "$dest") → $first_img"
+done
 
 # --- 4. 清理已取消发布的文章 ---
 # 保留 index.md 和非 Writing 来源的文件（如 fetch_wechat.py 生成的）
