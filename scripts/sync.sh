@@ -111,7 +111,10 @@ done < <(find "$CONTENT_DIR" -maxdepth 1 -name '*.md' -print0)
 echo ""
 echo "同步完成: ${#SYNCED_FILES[@]} 篇发布, $REMOVED 篇移除"
 
-# --- 5. Git 提交并推送 ---
+# --- 5. 图片优化为 WebP ---
+bash "$SCRIPT_DIR/optimize-images.sh"
+
+# --- 6. Git 提交并推送 ---
 cd "$MYGARDEN_DIR"
 
 if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard content/)" ]; then

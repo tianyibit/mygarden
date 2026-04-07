@@ -32,6 +32,11 @@ jobs:
 
       - run: npm ci
 
+      - name: Optimize images to WebP
+        run: |
+          sudo apt-get install -y -qq webp
+          bash scripts/optimize-images.sh
+
       - name: Build Quartz
         run: npx quartz build
 
