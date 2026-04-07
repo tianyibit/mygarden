@@ -14,7 +14,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     locale: "zh-CN",
-    baseUrl: "mygarden-6m0.pages.dev",
+    baseUrl: "gaomz.com",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
