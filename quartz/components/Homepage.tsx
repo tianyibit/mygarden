@@ -86,12 +86,14 @@ export default ((userOpts?: Partial<Options>) => {
             {recentPages.map((page, idx) => {
               const title = page.frontmatter?.title ?? "Untitled"
               const tags = page.frontmatter?.tags ?? []
-              const cover = (page.frontmatter?.cover as string) || placeholderCovers[idx % placeholderCovers.length]
+              const cover = page.frontmatter?.cover as string | undefined
               return (
                 <a href={resolveRelative(fileData.slug!, page.slug!)} class="hp-card internal" data-no-popover>
-                  <div class="hp-card-img">
-                    <img src={cover} alt={title} />
-                  </div>
+                  {cover && (
+                    <div class="hp-card-img">
+                      <img src={cover} alt={title} />
+                    </div>
+                  )}
                   <div class="hp-card-body">
                     <div class="hp-card-meta">
                       <span class="hp-card-date">
