@@ -2,7 +2,6 @@
 title: 投行科技的过去、现在与未来
 date: 2024-08-06
 publish: true
-slug: investment-banking-tech-past-present-future
 cover: images/0eb8d314091a.png
 tags:
   - 投行科技

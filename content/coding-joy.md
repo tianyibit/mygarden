@@ -6,7 +6,6 @@ tags:
   - 随笔
 publish: true
 cover: images/5a4269d3175f.png
-slug: coding-joy
 ---
 ![[Pasted image 20260407202948.png]]
 ## 工具

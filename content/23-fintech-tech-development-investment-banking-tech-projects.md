@@ -3,7 +3,6 @@ title: 23年金融科技发展奖之投行科技项目梳理
 date: 2024-11-29
 publish: true
 cover: images/bd5a34fead36.png
-slug: 23-fintech-tech-development-investment-banking-tech-projects
 tags:
   - 投行科技
 ---

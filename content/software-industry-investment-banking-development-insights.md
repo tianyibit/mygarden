@@ -5,7 +5,6 @@ tags:
   - 产品思考
 publish: true
 cover: images/31dfff3842b1.jpg
-slug: software-industry-investment-banking-development-insights
 ---
 ![](images/31dfff3842b1.jpg)
 

@@ -3,7 +3,6 @@ title: 科大讯飞大模型撰写招股书工作流拆解
 date: 2025-01-22
 publish: true
 cover: images/Pasted image 20260407211042.png
-slug: llm-writing-prospectus-workflow-breakdown
 tags:
   - 投行科技
   - 产品思考

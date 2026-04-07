@@ -6,7 +6,6 @@ tags:
   - 随笔
 publish: true
 cover: images/82599e452c39.jpg
-slug: making-good-stuff
 ---
 ![[Pasted image 20260407203548.png]]
 
