@@ -40,16 +40,20 @@ done < <(find "$WRITING_DIR" -maxdepth 1 -name '*.md' -print0)
 
 echo "找到 ${#PUBLISH_FILES[@]} 篇待发布文章"
 
-# --- 2. 同步文章到 content/ ---
+# --- 2. 同步文章到 content/（直接用英文文件名）---
 SYNCED_FILES=()
 for src in "${PUBLISH_FILES[@]}"; do
-    filename="$(basename "$src")"
-    dest="$CONTENT_DIR/$filename"
-    SYNCED_FILES+=("$filename")
+    orig_name="$(basename "$src" .md)"
+    # 生成英文文件名
+    title=$(head -20 "$src" | sed -n '/^---$/,/^---$/p' | grep '^title:' | sed 's/^title: *//;s/^"//;s/"$//')
+    slug=$(node "$SCRIPT_DIR/generate-slug.js" "${title:-$orig_name}" 2>/dev/null)
+    dest_name="${slug:-$orig_name}.md"
+    dest="$CONTENT_DIR/$dest_name"
+    SYNCED_FILES+=("$dest_name")
 
     if [ ! -f "$dest" ] || ! diff -q "$src" "$dest" > /dev/null 2>&1; then
         cp "$src" "$dest"
-        echo "  同步: $filename"
+        echo "  同步: $orig_name → $dest_name"
     fi
 done
 
@@ -83,26 +87,7 @@ if [ -d "$WRITING_IMAGES" ]; then
     done
 fi
 
-# --- 3.5 重命名文件为英文（Quartz 用文件名作 URL）---
-for dest in "$CONTENT_DIR"/*.md; do
-    filename="$(basename "$dest" .md)"
-    [ "$filename" = "index" ] && continue
-    # 文件名已经是纯英文则跳过
-    if echo "$filename" | grep -qP '[\x{4e00}-\x{9fff}]' 2>/dev/null || echo "$filename" | grep -q '[^a-zA-Z0-9_-]'; then
-        # 从 title 生成英文文件名
-        title=$(head -20 "$dest" | sed -n '/^---$/,/^---$/p' | grep '^title:' | sed 's/^title: *//;s/^"//;s/"$//')
-        [ -z "$title" ] && continue
-        slug=$(node "$SCRIPT_DIR/generate-slug.js" "$title")
-        [ -z "$slug" ] && continue
-        new_dest="$CONTENT_DIR/${slug}.md"
-        if [ "$dest" != "$new_dest" ] && [ ! -f "$new_dest" ]; then
-            mv "$dest" "$new_dest"
-            echo "  重命名: $filename → $slug"
-        fi
-    fi
-done
-
-# --- 3.6 自动添加 cover 字段（取文章内第一张图片）---
+# --- 3.5 自动添加 cover 字段（取文章内第一张图片）---
 for dest in "$CONTENT_DIR"/*.md; do
     [ "$(basename "$dest")" = "index.md" ] && continue
     # 取正文中第一张图片（支持两种语法）
@@ -125,31 +110,23 @@ for dest in "$CONTENT_DIR"/*.md; do
     fi
 done
 
-# --- 4. 清理已取消发布的文章 ---
-# 保留 index.md 和非 Writing 来源的文件（如 fetch_wechat.py 生成的）
+# --- 4. 清理不在发布列表中的文章 ---
 REMOVED=0
 while IFS= read -r -d '' existing; do
     filename="$(basename "$existing")"
-
-    # 跳过 index.md（手动维护的首页）
     [ "$filename" = "index.md" ] && continue
 
-    # 检查此文件是否来自 Writing（Writing 中存在同名文件）
-    writing_src="$WRITING_DIR/$filename"
-    if [ -f "$writing_src" ]; then
-        # 来自 Writing 但不在发布列表中 → 已取消发布，删除
-        found=false
-        for synced in "${SYNCED_FILES[@]}"; do
-            if [ "$synced" = "$filename" ]; then
-                found=true
-                break
-            fi
-        done
-        if [ "$found" = false ]; then
-            rm "$existing"
-            echo "  移除(取消发布): $filename"
-            REMOVED=$((REMOVED + 1))
+    found=false
+    for synced in "${SYNCED_FILES[@]}"; do
+        if [ "$synced" = "$filename" ]; then
+            found=true
+            break
         fi
+    done
+    if [ "$found" = false ]; then
+        rm "$existing"
+        echo "  移除: $filename"
+        REMOVED=$((REMOVED + 1))
     fi
 done < <(find "$CONTENT_DIR" -maxdepth 1 -name '*.md' -print0)
 
