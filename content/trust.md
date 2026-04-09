@@ -4,9 +4,9 @@ date: 2025-02-28
 tags:
   - 随笔
 publish: true
-cover: images/Pasted-image-20260407203238.webp
+cover: images/Pasted-image-20260407203238.png
 ---
-![[Pasted-image-20260407203238.webp]]
+![[Pasted-image-20260407203238.png]]
 
 
 上一篇文章写了「继续折腾」，请老婆帮忙审稿，她觉得不应该披露如此多个人信息。对这点，我没有太多顾虑，当时我的答复是「公众号没太多人看，我也不感觉敏感」，这个回答并不好，今天才算想明白底层原因。

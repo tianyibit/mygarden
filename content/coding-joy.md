@@ -5,9 +5,9 @@ tags:
   - 工程实践
   - 随笔
 publish: true
-cover: images/Pasted-image-20260407202948.webp
+cover: images/Pasted-image-20260407202948.png
 ---
-![[Pasted-image-20260407202948.webp]]
+![[Pasted-image-20260407202948.png]]
 ## 工具
 
 我的编程经验很有限。

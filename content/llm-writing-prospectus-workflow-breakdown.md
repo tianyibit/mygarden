@@ -2,12 +2,12 @@
 title: 科大讯飞大模型撰写招股书工作流拆解
 date: 2025-01-22
 publish: true
-cover: images/Pasted-image-20260407211042.webp
+cover: images/Pasted-image-20260407211042.png
 tags:
   - 投行科技
   - 产品思考
 ---
-![[Pasted-image-20260407211042.webp]]
+![[Pasted-image-20260407211042.png]]
 
 2024年8月5日，科大讯飞提交了大模型撰写招股书的专利，申请公布日为 2024年12月13日，该专利名为《长文本生成方法、装置、设备、存储介质及程序产品》。
 

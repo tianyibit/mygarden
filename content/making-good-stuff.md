@@ -5,9 +5,9 @@ tags:
   - 产品思考
   - 随笔
 publish: true
-cover: images/Pasted-image-20260407203548.webp
+cover: images/Pasted-image-20260407203548.png
 ---
-![[Pasted-image-20260407203548.webp]]
+![[Pasted-image-20260407203548.png]]
 
 哪吒2爆火，最大赢家是光线传媒。相比于最终票房数字，我更感兴趣的是光线是如何发现投资机会的，以及这笔投资的决策逻辑。
 
