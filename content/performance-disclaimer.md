@@ -4,9 +4,9 @@ date: 2021-07-22
 tags:
   - 随笔
 publish: true
-cover: images/F19672F5-CAC1-4035-8C97-283DE99FEAF4_1_201_a.webp
+cover: images/F19672F5-CAC1-4035-8C97-283DE99FEAF4_1_201_a.jpeg
 ---
-![[F19672F5-CAC1-4035-8C97-283DE99FEAF4_1_201_a.webp]]
+![[F19672F5-CAC1-4035-8C97-283DE99FEAF4_1_201_a.jpeg]]
 
 今天在听得到《华为数字化转型必修课》，聊到数字化时代的人才观，结合两种常见的消极工作心态，简单说两句。
 
